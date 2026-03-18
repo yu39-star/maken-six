@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>
+  Make N Solver#6 ver.Alpha<br>
+  </a>
+  <a href="index.html">
+    Reload
+  </a>
+</h1>
+
+<script>
+const nums = prompt("Type nums and ans: ex) 1 2 3 4 5 6 10").trim().split(" ");
+const first = String(nums[0]);
+const second = String(nums[1]);
+const third = String(nums[2]);
+const forth = String(nums[3]);
+const fifth = String(nums[4]);
+const sixth = String(nums[5]);
+const ans = Number(nums[6]);
+
+const numbers = [first, second, third, forth, fifth, sixth];
+const ops = ["/", "*", "-", "+"];
+
+document.write(
+  "I'm trying to make " +
+  Math.trunc(ans) +
+  " with " +
+  Math.trunc(first) + ", " +
+  Math.trunc(second) + ", " +
+  Math.trunc(third) + ", " +
+  Math.trunc(forth) + ", " +
+  Math.trunc(fifth) + ", " +
+  Math.trunc(sixth) + ".<br>"
+);
+
+function build(arr) {
+  if (arr.length === 1) {
+    return [arr[0]];
+  }
+  let results = [];
+  for (let i = 1; i < arr.length; i++) {
+    let lefts = build(arr.slice(0, i));
+    let rights = build(arr.slice(i));
+    for (let L of lefts) {
+      for (let R of rights) {
+        for (let op of ops) {
+          results.push(`(${L} ${op} ${R})`);
+        }
+      }
+    }
+  }
+  return results;
+}
+
+function solve() {
+  for (let a = 0; a < 6; a++) {
+    for (let b = 0; b < 6; b++) {
+      for (let c = 0; c < 6; c++) {
+        for (let d = 0; d < 6; d++) {
+          for (let e = 0; e < 6; e++) {
+            for (let f = 0; f < 6; f++) {
+              if (
+                a != b && a != c && a != d && a != e && a != f &&
+                b != c && b != d && b != e && b != f &&
+                c != d && c != e && c != f &&
+                d != e && d != f &&
+                e != f
+              ) {
+                let iti = numbers[a];
+                let ni = numbers[b];
+                let san = numbers[c];
+                let yon = numbers[d];
+                let go = numbers[e];
+                let roku = numbers[f];
+
+                let arr = [iti, ni, san, yon, go, roku];
+                let func = build(arr);
+
+                for (let x = 0; x < func.length; x++) {
+                  let value;
+                  try {
+                    value = eval(func[func.length - x - 1]);
+                  } catch (e) {
+                    continue;
+                  }
+                  if (Math.abs(value - ans) < 1e-6) {
+                    return func[func.length - x - 1];
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+document.write("An Answer:<br>");
+document.write(solve() + "<br>");
+document.write("Thanks for using.<br>");
+</script>
+</body>
+</html>
